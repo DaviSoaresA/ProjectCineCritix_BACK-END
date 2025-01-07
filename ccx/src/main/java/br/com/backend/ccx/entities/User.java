@@ -25,7 +25,7 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
@@ -44,7 +44,6 @@ public class User implements UserDetails {
 	private Role profile;
 
 	public User(Long id, String email, String fullName, String password) {
-		super();
 		this.id = id;
 		this.email = email;
 		this.fullName = fullName;
@@ -52,19 +51,14 @@ public class User implements UserDetails {
 	}
 
 	public User(User user) {
-		super();
+		this.id = user.getId();
+		this.email = user.getEmail();
+		this.fullName = user.getFullName();
+		this.password = user.getPassword();
+		this.profile = user.getProfile();
 	}
 
 	public User() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
@@ -116,6 +110,26 @@ public class User implements UserDetails {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Role getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Role profile) {
+		this.profile = profile;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

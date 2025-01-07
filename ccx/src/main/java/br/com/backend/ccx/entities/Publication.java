@@ -13,8 +13,8 @@ import jakarta.validation.constraints.NotNull;
 public class Publication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     @NotNull
@@ -26,14 +26,6 @@ public class Publication {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Double getRate() {
         return rate;
@@ -57,6 +49,14 @@ public class Publication {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }
