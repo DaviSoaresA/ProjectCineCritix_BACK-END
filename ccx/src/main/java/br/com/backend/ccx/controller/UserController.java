@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,27 +26,44 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService service;
+	@Autowired
+	private UserService service;
 
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> listar(){
-        return ResponseEntity.ok(service.listar());
-    }
+	@GetMapping
+	public ResponseEntity<List<UserDTO>> listAll() {
+		return ResponseEntity.ok(service.listAll());
+	}
 
-    @GetMapping("/{email}")
-    public ResponseEntity<UserDTO> buscar(@PathVariable String email){
-        if (service.buscar(email) == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(service.buscar(email));
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDTO> searchById(@PathVariable Long id) {
+		UserDTO userDto = service.searchById(id);
+		return ResponseEntity.ok(userDto);
+	}
 
-    @PostMapping
-    public ResponseEntity<UserDTO> salvar(@Valid @RequestBody UserInsertDTO userInsertDTO){
-        User user = service.salvar(userInsertDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+	@GetMapping("/{email}")
+	public ResponseEntity<UserDTO> searchByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(service.searchByEmail(email));
+	}
 
-        return ResponseEntity.created(uri).body(new UserDTO(user));
+	@PostMapping
+	public ResponseEntity<UserDTO> save(@Valid @RequestBody UserInsertDTO userInsertDTO) {
+		User user = service.save(userInsertDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+
+		return ResponseEntity.created(uri).body(new UserDTO(user));
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserInsertDTO userInsertDTO,
+			@RequestHeader("Authorization") String bearerToken) {
+		
+		UserDTO user = service.update(userInsertDTO, bearerToken);
+		return ResponseEntity.ok(user);
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String bearerToken) {
+        service.deleteById(id, bearerToken);
+        return ResponseEntity.noContent().build();
     }
 }
