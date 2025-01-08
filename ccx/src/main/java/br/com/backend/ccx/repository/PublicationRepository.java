@@ -8,7 +8,7 @@ import br.com.backend.ccx.entities.Publication;
 import br.com.backend.ccx.entities.User;
 
 
-public interface PublicationRepository extends JpaRepository<Publication, String>{
+public interface PublicationRepository extends JpaRepository<Publication, Long>{
 
     List<Publication> findByUser(User user);
 }
