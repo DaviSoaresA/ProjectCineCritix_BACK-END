@@ -1,5 +1,6 @@
 package br.com.backend.ccx.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.backend.ccx.enums.Role;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,10 +18,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@Table(name = "users")
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +47,10 @@ public class User implements UserDetails {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private Role profile;
+	
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Publication> publications = new ArrayList<>();
+
 
 	public User(Long id, String email, String fullName, String password) {
 		super();

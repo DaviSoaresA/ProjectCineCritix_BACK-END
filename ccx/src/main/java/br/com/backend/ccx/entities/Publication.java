@@ -12,51 +12,63 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 public class Publication {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column
-    @NotNull
-    private Double rate;
+	@Column
+	@NotNull
+	private Double rate;
 
-    @Column(nullable = true)
-    private String notes;
+	@Column(nullable = true)
+	private String notes;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    public String getId() {
-        return id;
-    }
+	public Publication(Long id, @NotNull Double rate, String notes, User user) {
+		super();
+		this.id = id;
+		this.rate = rate;
+		this.notes = notes;
+		this.user = user;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public Publication() {
+		super();
+	}
 
-    public Double getRate() {
-        return rate;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setRate(Double rate) {
-        this.rate = rate;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getNotes() {
-        return notes;
-    }
+	public Double getRate() {
+		return rate;
+	}
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+	public void setRate(Double rate) {
+		this.rate = rate;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public String getNotes() {
+		return notes;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }

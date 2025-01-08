@@ -39,7 +39,9 @@ public class SecurityConfig {
 				.authorizeHttpRequests(requests -> requests.requestMatchers("/public/").permitAll()
 
 						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**")
-						.permitAll().anyRequest().authenticated())
+						.permitAll().anyRequest()
+						.permitAll())
+						//.authenticated())
 
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.headers((headers) -> headers.disable());

@@ -21,6 +21,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	private ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
+	@ExceptionHandler(NotAuthorizedException.class)
+	private ResponseEntity<Object> handleNotFoundException(NotAuthorizedException ex) {
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
