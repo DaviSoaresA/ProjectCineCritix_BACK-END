@@ -37,7 +37,7 @@ public class MoviesController {
 		return ResponseEntity.ok(moviesDTO);
 	}
 	@GetMapping
-	public ResponseEntity<List<MoviesDTO>> list (){
+	public ResponseEntity<List<MoviesDTO>> list(){
 		List<MoviesDTO> moviesDTO = moviesService.listAll();
         return ResponseEntity.ok(moviesDTO);
 	}
@@ -46,6 +46,11 @@ public class MoviesController {
         MoviesDTO moviesDTO = moviesService.findById(id);
         return ResponseEntity.ok(moviesDTO);
     }
+	@GetMapping("/{title}")
+	public ResponseEntity<MoviesDTO> searchByTitle(@PathVariable String title) {
+		MoviesDTO moviesDTO = moviesService.findByTitle(title);
+		return ResponseEntity.ok(moviesDTO);
+	}
 	
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")

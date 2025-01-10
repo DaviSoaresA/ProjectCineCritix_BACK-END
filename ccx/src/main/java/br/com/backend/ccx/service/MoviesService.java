@@ -71,7 +71,6 @@ public class MoviesService {
 				}
 			}
 
-			// Buscar todos os filmes salvos no banco e converter para DTO
 			List<Movies> moviesList = moviesRepository.findAll();
 			return moviesList.stream().map(MoviesDTO::new).collect(Collectors.toList());
 
@@ -92,10 +91,16 @@ public class MoviesService {
 		}
 		return new MoviesDTO(movie.get());
 	}
+	public MoviesDTO findByTitle(String title) {
+		Optional<Movies> movieOpt = moviesRepository.findByTitle(title);
+		if (movieOpt.isEmpty()) {
+			throw new NotFoundException("Filme não encontrado");
+		}
+		return new MoviesDTO(movieOpt.get());
+	}
 
 	public MoviesDTO create(MovieInsertDTO insert, String token) {
 		
-		// Validar token
 		Long idUser = jwt.getId(token);
 		
 		Optional<User> userOpt = userRepository.findById(idUser);
