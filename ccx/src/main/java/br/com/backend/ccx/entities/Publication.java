@@ -7,9 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "publications")
 public class Publication {
 
 	@Id
@@ -27,7 +29,7 @@ public class Publication {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public Publication(Long id, @NotNull Double rate, String notes, User user) {
+	public Publication(Long id, Double rate, String notes, User user) {
 		super();
 		this.id = id;
 		this.rate = rate;

@@ -7,4 +7,5 @@ public enum Role {
 	 public String getRoleName() {
         return this.name();
     }
+	 
 }
