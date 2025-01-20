@@ -2,7 +2,7 @@ package br.com.backend.ccx.enums;
 
 public enum Role {
 
-	USER, ADM;
+	USER, ADMIN;
 	
 	 public String getRoleName() {
         return this.name();
