@@ -47,10 +47,12 @@ public class User implements UserDetails {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private Role profile;
-	
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Publication> publications = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Publication> publications = new ArrayList<>();
+
+	@Column
+	private String avatar;
 
 	public User(Long id, String email, String fullName, String password) {
 		this.id = id;
@@ -139,6 +141,22 @@ public class User implements UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<Publication> getPublications() {
+		return publications;
+	}
+
+	public void setPublications(List<Publication> publications) {
+		this.publications = publications;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 }
