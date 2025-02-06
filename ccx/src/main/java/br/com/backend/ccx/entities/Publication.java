@@ -7,9 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "publications")
 public class Publication {
 
 	@Id
@@ -24,14 +26,19 @@ public class Publication {
 	private String notes;
 
 	@ManyToOne
+	@JoinColumn(name = "movie_id", nullable = false)
+	private Movies movie;
+
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public Publication(Long id, @NotNull Double rate, String notes, User user) {
+	public Publication(Long id, Double rate, String notes, Movies movie, User user) {
 		super();
 		this.id = id;
 		this.rate = rate;
 		this.notes = notes;
+		this.movie = movie;
 		this.user = user;
 	}
 
@@ -70,5 +77,13 @@ public class Publication {
     public void setId(Long id) {
         this.id = id;
     }
+
+	public Movies getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movies movie) {
+		this.movie = movie;
+	}
 
 }
