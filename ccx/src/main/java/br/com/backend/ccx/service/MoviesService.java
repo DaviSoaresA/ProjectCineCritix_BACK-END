@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -44,10 +45,10 @@ public class MoviesService {
 
 	private static final String OMDB_API_URL = "http://www.omdbapi.com/";
 
-	public List<MoviesDTO> insertOmdbMovies(Pageable pageable) {
+	public List<MoviesDTO> insertOmdbMovies() {
 		// cada pagina retorna 10 filmes
 		int maxPages = 10;
-		int currentPage = pageable.getPageNumber() + 1;
+		int currentPage = + 1;
 
 		try {
 			for (int i = 0; i < maxPages; i++) {
@@ -82,6 +83,11 @@ public class MoviesService {
 	public List<MoviesDTO> listAll() {
 		List<Movies> movies = moviesRepository.findAll();
 		return movies.stream().map(MoviesDTO::new).toList();
+	}
+	public Page<MoviesDTO> listPag(Pageable pageable ) {
+		Page<Movies> movies = moviesRepository.findAll(pageable);
+		Page<MoviesDTO> moviesDTO = movies.map(movie -> new MoviesDTO(movie));
+		return moviesDTO;
 	}
 
 	public MoviesDTO findById(Long id) {

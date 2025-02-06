@@ -1,9 +1,12 @@
 package br.com.backend.ccx.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Movies {
@@ -14,18 +17,19 @@ public class Movies {
 	private String title;
 	private String year;
 	private String type;
-	private String Poster;
+	private String poster;
 
-//	private Publication publication;
+	@OneToMany(mappedBy = "movie")
+	private List<Publication> publications;
 
-	public Movies(Long id, String title, String year, String type, String poster) {
+	public Movies(Long id, String title, String year, String type, String poster, List<Publication> publications) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.year = year;
 		this.type = type;
-		Poster = poster;
-//		this.publication = publication;
+		this.poster = poster;
+		this.publications = publications;
 	}
 
 	public Movies() {
@@ -65,11 +69,18 @@ public class Movies {
 	}
 
 	public String getPoster() {
-		return Poster;
+		return poster;
 	}
 
 	public void setPoster(String poster) {
-		Poster = poster;
+		this.poster = poster;
 	}
 
+	public List<Publication> getPublications() {
+		return publications;
+	}
+
+	public void setPublications(List<Publication> publications) {
+		this.publications = publications;
+	}
 }

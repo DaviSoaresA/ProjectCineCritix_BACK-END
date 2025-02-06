@@ -3,6 +3,7 @@ package br.com.backend.ccx.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -31,45 +32,55 @@ public class MoviesController {
 	private MoviesService moviesService;
 
 	@PostMapping("/getMoviesOmdb")
-	public ResponseEntity<List<MoviesDTO>> insertMoviesOmdb(
-			@PageableDefault(direction = Sort.Direction.ASC, page = 0, size = 8) Pageable pageable) {
-		List<MoviesDTO> moviesDTO = moviesService.insertOmdbMovies(pageable);
+	public ResponseEntity<List<MoviesDTO>> insertMoviesOmdb() {
+		List<MoviesDTO> moviesDTO = moviesService.insertOmdbMovies();
 		return ResponseEntity.ok(moviesDTO);
 	}
+
 	@GetMapping
-	public ResponseEntity<List<MoviesDTO>> list(){
+	public ResponseEntity<List<MoviesDTO>> list() {
 		List<MoviesDTO> moviesDTO = moviesService.listAll();
-        return ResponseEntity.ok(moviesDTO);
+		return ResponseEntity.ok(moviesDTO);
 	}
+
+	@GetMapping("/listpag")
+	public ResponseEntity<Page<MoviesDTO>> listPageable(
+			@PageableDefault(direction = Sort.Direction.ASC, page = 0, size = 8) Pageable pageable) {
+		Page<MoviesDTO> moviesDTO = moviesService.listPag(pageable);
+		return ResponseEntity.ok(moviesDTO);
+	}
+
 	@GetMapping("/{id}")
-    public ResponseEntity<MoviesDTO> searchById(@PathVariable Long id) {
-        MoviesDTO moviesDTO = moviesService.findById(id);
-        return ResponseEntity.ok(moviesDTO);
-    }
+	public ResponseEntity<MoviesDTO> searchById(@PathVariable Long id) {
+		MoviesDTO moviesDTO = moviesService.findById(id);
+		return ResponseEntity.ok(moviesDTO);
+	}
+
 	@GetMapping("/{title}")
 	public ResponseEntity<MoviesDTO> searchByTitle(@PathVariable String title) {
 		MoviesDTO moviesDTO = moviesService.findByTitle(title);
 		return ResponseEntity.ok(moviesDTO);
 	}
-	
+
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MoviesDTO> insert(@Valid @RequestBody MovieInsertDTO insert, @RequestHeader("Authorization") String bearerToken) {
-        MoviesDTO moviesDTO = moviesService.create(insert, bearerToken);
-        return ResponseEntity.ok(moviesDTO);
-    }
-	
+	public ResponseEntity<MoviesDTO> insert(@Valid @RequestBody MovieInsertDTO insert,
+			@RequestHeader("Authorization") String bearerToken) {
+		MoviesDTO moviesDTO = moviesService.create(insert, bearerToken);
+		return ResponseEntity.ok(moviesDTO);
+	}
+
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<MoviesDTO> update(@PathVariable Long id, @Valid @RequestBody MovieInsertDTO update) {
-        MoviesDTO moviesDTO = moviesService.update(id, update);
-        return ResponseEntity.ok(moviesDTO);
-    }
-	@DeleteMapping("/{id}")	
+		MoviesDTO moviesDTO = moviesService.update(id, update);
+		return ResponseEntity.ok(moviesDTO);
+	}
+
+	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<MoviesDTO> delete(@PathVariable Long id){
+	public ResponseEntity<MoviesDTO> delete(@PathVariable Long id) {
 		moviesService.delete(id);
-        return ResponseEntity.ok().build();
-	}}
-	
-	
+		return ResponseEntity.ok().build();
+	}
+}

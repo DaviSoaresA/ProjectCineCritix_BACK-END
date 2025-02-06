@@ -53,6 +53,7 @@ public class PublicationService {
         publication.setNotes(insertDto.getNotes());
         publication.setRate(insertDto.getRate());
         publication.setUser(userOpt.get());
+        publication.setMovie(insertDto.getMovies());
         publicationRepository.save(publication);
         
         PublicationDTO publicationDTO = new PublicationDTO(publication);
