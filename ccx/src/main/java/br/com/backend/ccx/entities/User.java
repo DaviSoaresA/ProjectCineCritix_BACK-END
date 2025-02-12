@@ -47,13 +47,14 @@ public class User implements UserDetails {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private Role profile;
-	
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Publication> publications = new ArrayList<>();
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Publication> publications = new ArrayList<>();
+
+	@Column
+	private String avatar;
 
 	public User(Long id, String email, String fullName, String password) {
-		super();
 		this.id = id;
 		this.email = email;
 		this.fullName = fullName;
@@ -61,19 +62,14 @@ public class User implements UserDetails {
 	}
 
 	public User(User user) {
-		super();
+		this.id = user.getId();
+		this.email = user.getEmail();
+		this.fullName = user.getFullName();
+		this.password = user.getPassword();
+		this.profile = user.getProfile();
 	}
 
 	public User() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getEmail() {
@@ -125,6 +121,42 @@ public class User implements UserDetails {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Role getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Role profile) {
+		this.profile = profile;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public List<Publication> getPublications() {
+		return publications;
+	}
+
+	public void setPublications(List<Publication> publications) {
+		this.publications = publications;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 }

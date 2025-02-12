@@ -50,6 +50,7 @@ public class UserService {
 		user.setEmail(insertDTO.getEmail());
 		user.setFullName(insertDTO.getFullName());
 		user.setPassword(insertDTO.getPassword());
+		user.setAvatar(insertDTO.getAvatar());
 		repository.save(user);
 
 		return user;

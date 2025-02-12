@@ -46,14 +46,6 @@ public class Publication {
 		super();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Double getRate() {
 		return rate;
 	}
@@ -78,6 +70,14 @@ public class Publication {
 		this.user = user;
 	}
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 	public Movies getMovie() {
 		return movie;
 	}
@@ -85,4 +85,5 @@ public class Publication {
 	public void setMovie(Movies movie) {
 		this.movie = movie;
 	}
+
 }
