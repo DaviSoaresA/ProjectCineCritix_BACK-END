@@ -40,7 +40,7 @@ public class OpenApiConfig {
 
 		License apacheLicense = new License().name("Apache License").url("https://www.apache.org/license/LICENSE-2.0");
 
-		Info info = new Info().title("API para site de hamburgueria burguer-master").version("1.0").contact(contact)
+		Info info = new Info().title("API para site de Criticas").version("1.0").contact(contact)
 				.description("API de Burguer Master").termsOfService("https://www.meudominio.com.br/termos")
 				.license(apacheLicense);
 
