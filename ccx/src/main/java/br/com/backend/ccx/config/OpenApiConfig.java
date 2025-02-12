@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
@@ -17,41 +16,35 @@ import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class OpenApiConfig {
 
-    @Value("${prop.swagger.url}")
-    private String url;
+    @Value("${dominio.openapi.dev-url}")
+    private String devUrl;
+
+    @Value("${dominio.openapi.prod-url}")
+    private String proUrl;
 
     @Bean
-    public OpenAPI myOpenAPI(){
+    @PreAuthorize("permitAll()")
+    OpenAPI myOpenAPI() {
+        Server devServer = new Server();
+        devServer.setUrl(devUrl);
+        devServer.setDescription("Url do servidor de desenvolvimento");
 
-        Server server = new Server();
-        server.setUrl(url);
-        server.setDescription("Servidor de Desenvolvimento");
+        Server prodServer = new Server();
+        prodServer.setUrl(proUrl);
+        prodServer.setDescription("Url do servidor de produção");
 
-        License license = new License();
-        license.setName("Apache 2.0");
-        license.setUrl("http://www.apache.org/licenses/LICENSE-2.0.html");
+        Contact contact = new Contact();
+        contact.setEmail("contato@burguer-master.com.br");
+        contact.setName("Burguer-Master");
+        contact.setUrl("https://www.burguer-master.com.br");
 
-        Info info = new Info();
-        info.setTitle("CCX");
-		info.setVersion("0.0.1");
-		info.setDescription("CineCritix");
-		info.setLicense(license);
-		info.termsOfService("http://swagger.io/terms/");
+        License apacheLicense = new License().name("Apache License").url("https://www.apache.org/license/LICENSE-2.0");
 
-        return new OpenAPI().info(info).servers(List.of(server));
+        Info info = new Info().title("API para site de hamburgueria burguer-master").version("1.0").contact(contact)
+                .description("API de Burguer Master").termsOfService("https://www.meudominio.com.br/termos")
+                .license(apacheLicense);
+
+        return new OpenAPI().info(info).servers(List.of(devServer, prodServer));
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowCredentials(true);
-            config.addAllowedOrigin("*");
-            config.addAllowedHeader("*");
-            config.addAllowedMethod("*");
-
-            source.registerCorsConfiguration("/v3/api-docs", config);
-            return new CorsFilter(source);
-    }
 }
