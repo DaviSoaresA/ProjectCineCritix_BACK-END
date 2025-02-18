@@ -84,6 +84,7 @@ public class UserController {
 	@Operation(summary = "Atualiza o usuário através do seu id")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Usuário localizado e atualizado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autenticado"),
 			@ApiResponse(responseCode = "403", description = "Operação proibida e não pode ser concluída"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
@@ -98,6 +99,7 @@ public class UserController {
 	@Operation(summary = "Deleta um usuário no sistema através do seu id")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Usuário localizado e deletado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Requisição inválida"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autenticado"),
 			@ApiResponse(responseCode = "403", description = "Operação proibida e não pode ser concluída"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
