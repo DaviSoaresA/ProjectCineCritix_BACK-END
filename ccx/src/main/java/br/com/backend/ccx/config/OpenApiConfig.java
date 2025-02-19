@@ -16,35 +16,35 @@ import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class OpenApiConfig {
 
-    @Value("${dominio.openapi.dev-url}")
-    private String devUrl;
+	@Value("${dominio.openapi.dev-url}")
+	private String devUrl;
 
-    @Value("${dominio.openapi.prod-url}")
-    private String proUrl;
+	@Value("${dominio.openapi.prod-url}")
+	private String proUrl;
 
-    @Bean
-    @PreAuthorize("permitAll()")
-    OpenAPI myOpenAPI() {
-        Server devServer = new Server();
-        devServer.setUrl(devUrl);
-        devServer.setDescription("Url do servidor de desenvolvimento");
+	@Bean
+	@PreAuthorize("permitAll()")
+	OpenAPI myOpenAPI() {
+		Server devServer = new Server();
+		devServer.setUrl(devUrl);
+		devServer.setDescription("Url do servidor de desenvolvimento");
 
-        Server prodServer = new Server();
-        prodServer.setUrl(proUrl);
-        prodServer.setDescription("Url do servidor de produção");
+		Server prodServer = new Server();
+		prodServer.setUrl(proUrl);
+		prodServer.setDescription("Url do servidor de produção");
 
-        Contact contact = new Contact();
-        contact.setEmail("contato@burguer-master.com.br");
-        contact.setName("Burguer-Master");
-        contact.setUrl("https://www.burguer-master.com.br");
+		Contact contact = new Contact();
+		contact.setEmail("contato@burguer-master.com.br");
+		contact.setName("Burguer-Master");
+		contact.setUrl("https://www.burguer-master.com.br");
 
-        License apacheLicense = new License().name("Apache License").url("https://www.apache.org/license/LICENSE-2.0");
+		License apacheLicense = new License().name("Apache License").url("https://www.apache.org/license/LICENSE-2.0");
 
-        Info info = new Info().title("API para site de hamburgueria burguer-master").version("1.0").contact(contact)
-                .description("API de Burguer Master").termsOfService("https://www.meudominio.com.br/termos")
-                .license(apacheLicense);
+		Info info = new Info().title("API para site de Criticas").version("1.0").contact(contact)
+				.description("API de Burguer Master").termsOfService("https://www.meudominio.com.br/termos")
+				.license(apacheLicense);
 
-        return new OpenAPI().info(info).servers(List.of(devServer, prodServer));
-    }
+		return new OpenAPI().info(info).servers(List.of(devServer, prodServer));
+	}
 
 }
