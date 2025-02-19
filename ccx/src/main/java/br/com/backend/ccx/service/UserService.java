@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.backend.ccx.dto.UserDTO;
@@ -21,6 +22,9 @@ public class UserService {
 
 	@Autowired
 	private JwtUtil jwt;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public List<UserDTO> listAll() {
 		return repository.findAll().stream().map(UserDTO::new).toList();
@@ -49,10 +53,10 @@ public class UserService {
 		User user = new User();
 		user.setEmail(insertDTO.getEmail());
 		user.setFullName(insertDTO.getFullName());
-		user.setPassword(insertDTO.getPassword());
+		user.setPassword(encoder.encode(insertDTO.getPassword()));
 		user.setAvatar(insertDTO.getAvatar());
+		user.setProfile(insertDTO.getProfile());
 		repository.save(user);
-
 		return user;
 	}
 
