@@ -28,17 +28,22 @@ public class Publication {
 	@ManyToOne
 	@JoinColumn(name = "movie_id", nullable = false)
 	private Movies movie;
+	
+	@ManyToOne
+	@JoinColumn(name = "serie_id", nullable = false)
+	private Series series;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public Publication(Long id, Double rate, String notes, Movies movie, User user) {
+	public Publication(Long id, Double rate, String notes, Movies movie, User user, Series series) {
 		super();
 		this.id = id;
 		this.rate = rate;
 		this.notes = notes;
 		this.movie = movie;
+		this.series = series;
 		this.user = user;
 	}
 
@@ -64,6 +69,15 @@ public class Publication {
 
 	public User getUser() {
 		return user;
+	}
+	
+
+	public Series getSeries() {
+		return series;
+	}
+
+	public void setSeries(Series series) {
+		this.series = series;
 	}
 
 	public void setUser(User user) {

@@ -5,12 +5,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.com.backend.ccx.entities.Movies;
+import br.com.backend.ccx.entities.Series;
 import br.com.backend.ccx.entities.Publication;
 import jakarta.persistence.OneToMany;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MoviesDTO {
+public class SeriesDTO {
 
 	@JsonProperty("Title")
 	private String title;
@@ -21,14 +21,14 @@ public class MoviesDTO {
 	@JsonProperty("Poster")
 	private String poster;
 
-	@OneToMany(mappedBy = "movie")
+	@OneToMany(mappedBy = "serie")
 	private List<Publication> publications;
 
-	public MoviesDTO() {
+	public SeriesDTO() {
 		super();
 	}
 
-	public MoviesDTO(String title, String year, String type, String poster, List<Publication> publications) {
+	public SeriesDTO(String title, String year, String type, String poster, List<Publication> publications) {
 		super();
 		this.title = title;
 		this.year = year;
@@ -37,12 +37,12 @@ public class MoviesDTO {
 		this.publications = publications;
 	}
 
-	public MoviesDTO(Movies movies) {
-		this.title = movies.getTitle();
-		this.year = movies.getYear();
-		this.type = movies.getType();
-		this.poster = movies.getPoster();
-		this.publications = movies.getPublications();
+	public SeriesDTO(Series series) {
+		this.title = series.getTitle();
+		this.year = series.getYear();
+		this.type = series.getType();
+		this.poster = series.getPoster();
+		this.publications = series.getPublications();
 
 	}
 
