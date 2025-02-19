@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.backend.ccx.dto.MovieInsertDTO;
 import br.com.backend.ccx.dto.MoviesDTO;
 import br.com.backend.ccx.dto.OmdbResponseDTO;
+import br.com.backend.ccx.dto.SearchResultDTO;
 import br.com.backend.ccx.entities.Movies;
 import br.com.backend.ccx.entities.User;
 import br.com.backend.ccx.exception.NotFoundException;
@@ -52,7 +53,7 @@ public class MoviesService {
 
 		try {
 			for (int i = 0; i < maxPages; i++) {
-				String url = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL).queryParam("s", "movie")
+				String url = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL).queryParam("s", "series")
 						.queryParam("page", currentPage + i).queryParam("apikey", apiKey).toUriString();
 
 				ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -62,7 +63,7 @@ public class MoviesService {
 				ObjectMapper objectMapper = new ObjectMapper();
 				OmdbResponseDTO omdbResponse = objectMapper.readValue(responseBody, OmdbResponseDTO.class);
 
-				for (MoviesDTO movieDto : omdbResponse.getMovies()) {
+				for (SearchResultDTO movieDto : omdbResponse.getResults()) {
 					Movies movie = new Movies();
 					movie.setTitle(movieDto.getTitle());
 					movie.setYear(movieDto.getYear());

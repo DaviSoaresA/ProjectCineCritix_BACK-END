@@ -8,7 +8,7 @@ import java.util.List;
 public class OmdbResponseDTO {
 
     @JsonProperty("Search")
-    private List<MoviesDTO> movies;
+    private List<SearchResultDTO> results; 
 
     @JsonProperty("totalResults")
     private String totalResults;
@@ -16,17 +16,15 @@ public class OmdbResponseDTO {
     @JsonProperty("Response")
     private String response;
 
+    public List<SearchResultDTO> getResults() {
+        return results;
+    }
 
+    public void setResults(List<SearchResultDTO> results) {
+        this.results = results;
+    }
 
-    public List<MoviesDTO> getMovies() {
-		return movies;
-	}
-
-	public void setMovies(List<MoviesDTO> movies) {
-		this.movies = movies;
-	}
-
-	public String getTotalResults() {
+    public String getTotalResults() {
         return totalResults;
     }
 
