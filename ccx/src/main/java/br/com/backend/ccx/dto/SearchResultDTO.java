@@ -15,7 +15,7 @@ public class SearchResultDTO {
     @JsonProperty("imdbID")
     private String imdbID;
 
-    @JsonProperty("Type") // "movie" ou "series"
+    @JsonProperty("Type") 
     private String type;
 
     @JsonProperty("Poster")
