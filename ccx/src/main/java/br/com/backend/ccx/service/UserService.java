@@ -1,0 +1,105 @@
+package br.com.backend.ccx.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import br.com.backend.ccx.dto.UserDTO;
+import br.com.backend.ccx.dto.UserInsertDTO;
+import br.com.backend.ccx.entities.User;
+import br.com.backend.ccx.exception.NotFoundException;
+import br.com.backend.ccx.repository.UserRepository;
+import br.com.backend.ccx.security.JwtUtil;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserRepository repository;
+
+	@Autowired
+	private JwtUtil jwt;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+
+	public List<UserDTO> listAll() {
+		return repository.findAll().stream().map(UserDTO::new).toList();
+	}
+
+	public UserDTO searchById(Long id) {
+		Optional<User> user = repository.findById(id);
+		if (user.isEmpty()) {
+			throw new NotFoundException("User not found");
+		}
+		return new UserDTO(user.get());
+	}
+
+	public UserDTO searchByEmail(String email) {
+		Optional<User> user = repository.findByEmail(email);
+		if (user.isEmpty()) {
+			throw new NotFoundException("User not found");
+		}
+		return new UserDTO(user.get());
+	}
+
+	public User save(UserInsertDTO insertDTO) {
+		if (!insertDTO.getConfirmPassword().equals(insertDTO.getPassword())) {
+			new RuntimeException("As senhas estão diferentes");
+		}
+		User user = new User();
+		user.setEmail(insertDTO.getEmail());
+		user.setFullName(insertDTO.getFullName());
+		user.setPassword(encoder.encode(insertDTO.getPassword()));
+		user.setAvatar(insertDTO.getAvatar());
+		user.setProfile(insertDTO.getProfile());
+		repository.save(user);
+		return user;
+	}
+
+	public UserDTO update(UserInsertDTO userInsert, String Token) {
+		Long idUser = jwt.getId(Token);
+
+		Optional<User> userOpt = repository.findById(idUser);
+
+		if (userOpt.isEmpty()) {
+			throw new NotFoundException("User not found");
+		}
+
+		User user = new User();
+		user.setId(idUser);
+		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
+		user.setFullName(userInsert.getFullName() != null ? userInsert.getFullName() : userOpt.get().getFullName());
+		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		repository.save(user);
+
+		return new UserDTO(user);
+	}
+
+	public void deleteById(Long id, String token) {
+		if (id != null) {
+			Optional<User> userOpt = repository.findById(id);
+
+			if (userOpt.isEmpty()) {
+				throw new NotFoundException("User not Authenticated");
+			} else {
+				repository.deleteById(id);
+				return;
+			}
+		}
+
+		Long userid = jwt.getId(token);
+
+		Optional<User> userOpt = repository.findById(userid);
+
+		if (userOpt.isEmpty()) {
+			throw new NotFoundException("User not Authenticated");
+		}
+
+		repository.deleteById(userid);
+		return;
+	}
+}
