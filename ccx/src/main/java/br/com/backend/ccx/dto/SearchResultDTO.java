@@ -21,6 +21,27 @@ public class SearchResultDTO {
     @JsonProperty("Poster")
     private String poster;
 
+    @JsonProperty("Genre")
+    private String genre;
+
+    @JsonProperty("Runtime")
+	private String runtime;
+
+    @JsonProperty("Released")
+	private String released;
+
+    @JsonProperty("Plot")
+	private String plot;
+
+    @JsonProperty("Director")
+	private String director;
+
+    @JsonProperty("Writer")
+	private String writer;
+
+    @JsonProperty("imdbRating")
+	private Double imdbRating;
+
     public String getTitle() {
         return title;
     }
@@ -60,4 +81,62 @@ public class SearchResultDTO {
     public void setPoster(String poster) {
         this.poster = poster;
     }
+
+    public Double getImdbRating() {
+        return imdbRating;
+    }
+
+    public void setImdbRating(Double imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
+    }
+
+    public String getReleased() {
+        return released;
+    }
+
+    public void setReleased(String released) {
+        this.released = released;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    
 }

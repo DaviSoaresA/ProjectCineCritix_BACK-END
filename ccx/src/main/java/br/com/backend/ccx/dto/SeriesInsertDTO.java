@@ -6,6 +6,14 @@ public class SeriesInsertDTO {
 	private String year;
 	private String type;
 	private String poster;
+	private String Genre;
+	private String Runtime;
+	private String Released;
+	private String Plot;
+	private String Director;
+	private String Writer;
+	private Double imdbRating;
+	private String idImdb;
 
 	public SeriesInsertDTO() {
 		super();
@@ -51,4 +59,69 @@ public class SeriesInsertDTO {
 		this.poster = poster;
 	}
 
+	public String getGenre() {
+		return Genre;
+	}
+
+	public void setGenre(String genre) {
+		Genre = genre;
+	}
+
+	public String getRuntime() {
+		return Runtime;
+	}
+
+	public void setRuntime(String runtime) {
+		Runtime = runtime;
+	}
+
+	public String getReleased() {
+		return Released;
+	}
+
+	public void setReleased(String released) {
+		Released = released;
+	}
+
+	public String getPlot() {
+		return Plot;
+	}
+
+	public void setPlot(String plot) {
+		Plot = plot;
+	}
+
+	public String getDirector() {
+		return Director;
+	}
+
+	public void setDirector(String director) {
+		Director = director;
+	}
+
+	public String getWriter() {
+		return Writer;
+	}
+
+	public void setWriter(String writer) {
+		Writer = writer;
+	}
+
+	public Double getImdbRating() {
+		return imdbRating;
+	}
+
+	public void setImdbRating(Double imdbRating) {
+		this.imdbRating = imdbRating;
+	}
+
+	public String getIdImdb() {
+		return idImdb;
+	}
+
+	public void setIdImdb(String idImdb) {
+		this.idImdb = idImdb;
+	}
+
+	
 }
