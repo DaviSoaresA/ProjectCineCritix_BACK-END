@@ -74,6 +74,7 @@ public class UserService {
 		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
 		user.setFullName(userInsert.getFullName() != null ? userInsert.getFullName() : userOpt.get().getFullName());
 		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		user.setAvatar(userInsert.getAvatar() != null ? userInsert.getAvatar() : userOpt.get().getAvatar());
 		repository.save(user);
 
 		return new UserDTO(user);

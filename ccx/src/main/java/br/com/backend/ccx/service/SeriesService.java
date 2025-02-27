@@ -74,6 +74,14 @@ public class SeriesService {
 	                    serie.setYear(serieDto.getYear());
 	                    serie.setType(serieDto.getType());
 	                    serie.setPoster(serieDto.getPoster());
+						serie.setDirector(serieDto.getDirector());
+						serie.setGenre(serieDto.getGenre());
+						serie.setIdImdb(serieDto.getImdbID());
+						serie.setImdbRating(serieDto.getImdbRating());
+						serie.setPlot(serieDto.getPlot());
+						serie.setReleased(serieDto.getReleased());
+						serie.setRuntime(serieDto.getRuntime());
+						serie.setWriter(serieDto.getWriter());
 	                    serieRepository.save(serie);
 	                }
 	            }
