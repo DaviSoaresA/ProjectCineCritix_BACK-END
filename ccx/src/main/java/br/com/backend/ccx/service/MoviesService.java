@@ -69,6 +69,14 @@ public class MoviesService {
 					movie.setYear(movieDto.getYear());
 					movie.setType(movieDto.getType());
 					movie.setPoster(movieDto.getPoster());
+					movie.setDirector(movieDto.getDirector());
+					movie.setGenre(movieDto.getGenre());
+					movie.setReleased(movieDto.getReleased());
+					movie.setRuntime(movieDto.getRuntime());
+					movie.setIdImdb(movieDto.getImdbID());
+					movie.setWriter(movieDto.getWriter());
+					movie.setPlot(movieDto.getPlot());
+					movie.setImdbRating(movieDto.getImdbRating());
 					moviesRepository.save(movie);
 				}
 			}

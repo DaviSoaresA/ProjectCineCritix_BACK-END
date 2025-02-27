@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 import br.com.backend.ccx.dto.UserDTO;
 import br.com.backend.ccx.dto.UserInsertDTO;
 import br.com.backend.ccx.entities.User;
+import br.com.backend.ccx.enums.Role;
 import br.com.backend.ccx.exception.NotFoundException;
 import br.com.backend.ccx.repository.UserRepository;
 import br.com.backend.ccx.security.JwtUtil;
 
 @Service
 public class UserService {
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	private UserRepository repository;
@@ -53,9 +57,9 @@ public class UserService {
 		User user = new User();
 		user.setEmail(insertDTO.getEmail());
 		user.setFullName(insertDTO.getFullName());
-		user.setPassword(encoder.encode(insertDTO.getPassword()));
+		user.setPassword(bCryptPasswordEncoder.encode(insertDTO.getPassword()));
 		user.setAvatar(insertDTO.getAvatar());
-		user.setProfile(insertDTO.getProfile());
+		user.setProfile(Role.USER);
 		repository.save(user);
 		return user;
 	}
@@ -74,6 +78,7 @@ public class UserService {
 		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
 		user.setFullName(userInsert.getFullName() != null ? userInsert.getFullName() : userOpt.get().getFullName());
 		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		user.setAvatar(userInsert.getAvatar() != null ? userInsert.getAvatar() : userOpt.get().getAvatar());
 		repository.save(user);
 
 		return new UserDTO(user);
