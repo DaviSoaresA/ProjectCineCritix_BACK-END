@@ -26,6 +26,9 @@ public class UserService {
 
 	@Autowired
 	private JwtUtil jwt;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public List<UserDTO> listAll() {
 		return repository.findAll().stream().map(UserDTO::new).toList();
@@ -58,7 +61,6 @@ public class UserService {
 		user.setAvatar(insertDTO.getAvatar());
 		user.setProfile(Role.USER);
 		repository.save(user);
-
 		return user;
 	}
 
