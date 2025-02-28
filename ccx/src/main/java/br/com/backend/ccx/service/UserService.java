@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import br.com.backend.ccx.dto.UserDTO;
 import br.com.backend.ccx.dto.UserInsertDTO;
 import br.com.backend.ccx.entities.User;
+import br.com.backend.ccx.enums.Role;
+import br.com.backend.ccx.exception.NotAuthorizedException;
 import br.com.backend.ccx.exception.NotFoundException;
 import br.com.backend.ccx.repository.UserRepository;
 import br.com.backend.ccx.security.JwtUtil;
@@ -55,7 +57,7 @@ public class UserService {
 		user.setFullName(insertDTO.getFullName());
 		user.setPassword(encoder.encode(insertDTO.getPassword()));
 		user.setAvatar(insertDTO.getAvatar());
-		user.setProfile(insertDTO.getProfile());
+		user.setProfile(insertDTO == null ? Role.USER : insertDTO.getProfile());
 		repository.save(user);
 		return user;
 	}
@@ -74,6 +76,7 @@ public class UserService {
 		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
 		user.setFullName(userInsert.getFullName() != null ? userInsert.getFullName() : userOpt.get().getFullName());
 		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		user.setProfile(userInsert.getProfile() != null ? userInsert.getProfile() : userOpt.get().getProfile());
 		repository.save(user);
 
 		return new UserDTO(user);
@@ -84,7 +87,7 @@ public class UserService {
 			Optional<User> userOpt = repository.findById(id);
 
 			if (userOpt.isEmpty()) {
-				throw new NotFoundException("User not Authenticated");
+				throw new NotAuthorizedException("User not Authenticated");
 			} else {
 				repository.deleteById(id);
 				return;
@@ -96,7 +99,7 @@ public class UserService {
 		Optional<User> userOpt = repository.findById(userid);
 
 		if (userOpt.isEmpty()) {
-			throw new NotFoundException("User not Authenticated");
+			throw new NotAuthorizedException("User not Authenticated");
 		}
 
 		repository.deleteById(userid);

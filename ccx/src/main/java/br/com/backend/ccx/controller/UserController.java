@@ -87,7 +87,7 @@ public class UserController {
 			@ApiResponse(responseCode = "403", description = "Operação proibida e não pode ser concluída"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
-	@PutMapping("/{id}")
+	@PutMapping()
 	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserInsertDTO userInsertDTO,
 			@RequestHeader("Authorization") String bearerToken) {
 
