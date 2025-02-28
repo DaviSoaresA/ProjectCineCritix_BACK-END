@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,7 +64,7 @@ public class UserController {
 			@ApiResponse(responseCode = "403", description = "Operação proibida e não pode ser concluída"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
-	@GetMapping("/{email}")
+	@GetMapping("/email/{email}")
 	public ResponseEntity<UserDTO> searchByEmail(@PathVariable String email) {
 		return ResponseEntity.ok(service.searchByEmail(email));
 	}
@@ -88,7 +89,7 @@ public class UserController {
 			@ApiResponse(responseCode = "403", description = "Operação proibida e não pode ser concluída"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
-	@PutMapping("/{id}")
+	@PutMapping()
 	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserInsertDTO userInsertDTO,
 			@RequestHeader("Authorization") String bearerToken) {
 
