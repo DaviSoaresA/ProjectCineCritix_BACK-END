@@ -29,137 +29,141 @@ import br.com.backend.ccx.security.JwtUtil;
 @Service
 public class SeriesService {
 
-	@Autowired
-	private SeriesRepository serieRepository;
-	
-	@Autowired
+    @Autowired
+    private SeriesRepository seriesRepository;
+    
+    @Autowired
     private UserRepository userRepository;
 
-	@Autowired
-	private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
-	@Value("2fcfe92f")
-	private String apiKey;
-	
-	@Autowired
-	private JwtUtil jwt;
+    @Value("2fcfe92f")
+    private String apiKey;
+    
+    @Autowired
+    private JwtUtil jwt;
 
-	private static final String OMDB_API_URL = "http://www.omdbapi.com/";
+    private static final String OMDB_API_URL = "http://www.omdbapi.com/";
 
-	public List<SeriesDTO> insertOmdbSeries() {
-	    int maxPages = 10;
-	    int currentPage = 1;
-
-	    try {
-	        for (int i = 0; i < maxPages; i++) {
-	            String url = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL)
-	                    .queryParam("s", "series")
-	                    .queryParam("type", "series")
-	                    .queryParam("page", currentPage + i)
-	                    .queryParam("apikey", apiKey)
-	                    .toUriString();
-
-	            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-	            String responseBody = response.getBody();
-
-	            // Converte o JSON para o DTO
-	            ObjectMapper objectMapper = new ObjectMapper();
-	            OmdbResponseDTO omdbResponse = objectMapper.readValue(responseBody, OmdbResponseDTO.class);
-
-	            // Verifica se há resultados antes de iterar
-	            if (omdbResponse.getResults() != null && !omdbResponse.getResults().isEmpty()) {
-	                for (SearchResultDTO serieDto : omdbResponse.getResults()) {
-	                    Series serie = new Series();
-	                    serie.setTitle(serieDto.getTitle());
-	                    serie.setYear(serieDto.getYear());
-	                    serie.setType(serieDto.getType());
-	                    serie.setPoster(serieDto.getPoster());
-						serie.setDirector(serieDto.getDirector());
-						serie.setGenre(serieDto.getGenre());
-						serie.setIdImdb(serieDto.getImdbID());
-						serie.setImdbRating(serieDto.getImdbRating());
-						serie.setPlot(serieDto.getPlot());
-						serie.setReleased(serieDto.getReleased());
-						serie.setRuntime(serieDto.getRuntime());
-						serie.setWriter(serieDto.getWriter());
-	                    serieRepository.save(serie);
-	                }
-	            }
-	        }
-
-	        return serieRepository.findAll().stream()
-	                .map(SeriesDTO::new)
-	                .collect(Collectors.toList());
-
-	    } catch (Exception e) {
-	        throw new RuntimeException("Erro ao buscar dados da API OMDB: " + e.getMessage());
-	    }
-	}
-
-
-	public List<SeriesDTO> listAll() {
-		List<Series> series = serieRepository.findAll();
-		return series.stream().map(SeriesDTO::new).toList();
-	}
-	public Page<SeriesDTO> listPag(Pageable pageable ) {
-		Page<Series> series = serieRepository.findAll(pageable);
-		Page<SeriesDTO> seriesDTO = series.map(serie -> new SeriesDTO(serie));
-		return seriesDTO;
-	}
-
-	public SeriesDTO findById(Long id) {
-		Optional<Series> serie = serieRepository.findById(id);
-		if (serie.isEmpty()) {
-			throw new NotFoundException("Filme não encontrado");
-		}
-		return new SeriesDTO(serie.get());
-	}
-	
-	public SeriesDTO findByTitle(String title) {
-		Optional<Series> serieOpt = serieRepository.findByTitle(title);
-		if (serieOpt.isEmpty()) {
-			throw new NotFoundException("Filme não encontrado");
-		}
-		return new SeriesDTO(serieOpt.get());
-	}
-
-	public SeriesDTO create(SeriesInsertDTO insert, String token) {
-		
-		Long idUser = jwt.getId(token);
-		
-		Optional<User> userOpt = userRepository.findById(idUser);
-		if (userOpt.isEmpty()) {
-			throw new NotFoundException("Usuario não autenticado");
-		}
-		
-		Series serie = new Series();
-		serie.setTitle(insert.getTitle());
-		serie.setYear(insert.getYear());
-		serie.setType(insert.getType());
-		serie.setPoster(insert.getPoster());
-		serieRepository.save(serie);
-		return new SeriesDTO(serie);
-	}
-
-	public SeriesDTO update(Long id, SeriesInsertDTO insertDto) {
-		Optional<Series>serieOpt = serieRepository.findById(id);
-		if (serieOpt.isEmpty()) {
-            throw new NotFoundException("Filme não encontrado");
+    public List<SeriesDTO> insertOmdbSeries() {
+        int maxPages = 50;
+        int currentPage = 1;
+        
+        try {
+            for (int i = 0; i < maxPages; i++) {
+                String url = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL)
+                        .queryParam("s", "series")
+                        .queryParam("page", currentPage + i)
+                        .queryParam("apikey", apiKey)
+                        .toUriString();
+                
+                ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+                String responseBody = response.getBody();
+                
+                ObjectMapper objectMapper = new ObjectMapper();
+                OmdbResponseDTO omdbResponse = objectMapper.readValue(responseBody, OmdbResponseDTO.class);
+                
+                for (SearchResultDTO seriesDtoApi : omdbResponse.getResults()) {
+                    String seriesUrl = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL)
+                            .queryParam("i", seriesDtoApi.getImdbID())
+                            .queryParam("apikey", apiKey)
+                            .toUriString();
+                    
+                    ResponseEntity<String> seriesResponse = restTemplate.getForEntity(seriesUrl, String.class);
+                    String seriesResponseBody = seriesResponse.getBody();
+                    
+                    SeriesDTO seriesDto = objectMapper.readValue(seriesResponseBody, SeriesDTO.class);
+                    
+                    Series series = new Series();
+                    series.setTitle(seriesDto.getTitle());
+                    series.setYear(seriesDto.getYear());
+                    series.setType(seriesDto.getType());
+                    series.setPoster(seriesDto.getPoster());
+                    series.setDirector(seriesDto.getDirector());
+                    series.setGenre(seriesDto.getGenre());
+                    series.setReleased(seriesDto.getReleased());
+                    series.setRuntime(seriesDto.getRuntime());
+                    series.setIdImdb(seriesDto.getImdbID());
+                    series.setWriter(seriesDto.getWriter());
+                    series.setPlot(seriesDto.getPlot());
+                    series.setImdbRating(seriesDto.getImdbRating());
+                    seriesRepository.save(series);
+                }
+            }
+            
+            List<Series> seriesList = seriesRepository.findAll();
+            return seriesList.stream().map(SeriesDTO::new).collect(Collectors.toList());
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao buscar dados da API OMDB: " + e.getMessage());
         }
-		Series serie = new Series();
-		serie.setId(id);
-		serie.setTitle(insertDto.getTitle() != null ? insertDto.getTitle(): serieOpt.get().getTitle());
-		serie.setYear(insertDto.getYear() != null ? insertDto.getYear(): serieOpt.get().getYear());
-		serie.setType(insertDto.getType() != null ? insertDto.getType(): serieOpt.get().getType());
-		serie.setPoster(insertDto.getPoster() != null ? insertDto.getPoster(): serieOpt.get().getPoster());
-		return new SeriesDTO(serie);
-	}
-	
+    }
+
+    public List<SeriesDTO> listAll() {
+        List<Series> series = seriesRepository.findAll();
+        return series.stream().map(SeriesDTO::new).toList();
+    }
+
+    public Page<SeriesDTO> listPag(Pageable pageable) {
+        Page<Series> series = seriesRepository.findAll(pageable);
+        return series.map(SeriesDTO::new);
+    }
+
+    public SeriesDTO findById(Long id) {
+        Optional<Series> seriesOpt = seriesRepository.findById(id);
+        if (seriesOpt.isEmpty()) {
+            throw new NotFoundException("Série não encontrada");
+        }
+        return new SeriesDTO(seriesOpt.get());
+    }
+    
+    public SeriesDTO findByTitle(String title) {
+        Optional<Series> seriesOpt = seriesRepository.findByTitle(title);
+        if (seriesOpt.isEmpty()) {
+            throw new NotFoundException("Série não encontrada");
+        }
+        return new SeriesDTO(seriesOpt.get());
+    }
+
+    public SeriesDTO create(SeriesInsertDTO insert, String token) {
+        Long idUser = jwt.getId(token);
+        
+        Optional<User> userOpt = userRepository.findById(idUser);
+        if (userOpt.isEmpty()) {
+            throw new NotFoundException("Usuário não autenticado");
+        }
+        
+        Series series = new Series();
+        series.setTitle(insert.getTitle());
+        series.setYear(insert.getYear());
+        series.setType(insert.getType());
+        series.setPoster(insert.getPoster());
+        seriesRepository.save(series);
+        return new SeriesDTO(series);
+    }
+
+    public SeriesDTO update(Long id, SeriesInsertDTO insertDto) {
+        Optional<Series> seriesOpt = seriesRepository.findById(id);
+        if (seriesOpt.isEmpty()) {
+            throw new NotFoundException("Série não encontrada");
+        }
+        
+        Series series = seriesOpt.get();
+        series.setTitle(insertDto.getTitle() != null ? insertDto.getTitle() : series.getTitle());
+        series.setYear(insertDto.getYear() != null ? insertDto.getYear() : series.getYear());
+        series.setType(insertDto.getType() != null ? insertDto.getType() : series.getType());
+        series.setPoster(insertDto.getPoster() != null ? insertDto.getPoster() : series.getPoster());
+        
+        seriesRepository.save(series);
+        return new SeriesDTO(series);
+    }
+    
     public void delete(Long id) {
-    	Optional<Series> serieOpt = serieRepository.findById(id);
-        if (serieOpt.isEmpty()) {
-            throw new NotFoundException("Filme não encontrado");
+        Optional<Series> seriesOpt = seriesRepository.findById(id);
+        if (seriesOpt.isEmpty()) {
+            throw new NotFoundException("Série não encontrada");
         }
-        serieRepository.deleteById(id);
+        seriesRepository.deleteById(id);
     }
 }

@@ -47,47 +47,60 @@ public class MoviesService {
 	private static final String OMDB_API_URL = "http://www.omdbapi.com/";
 
 	public List<MoviesDTO> insertOmdbMovies() {
-		// cada pagina retorna 10 filmes
-		int maxPages = 10;
-		int currentPage = + 1;
-
-		try {
-			for (int i = 0; i < maxPages; i++) {
-				String url = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL).queryParam("s", "series")
-						.queryParam("page", currentPage + i).queryParam("apikey", apiKey).toUriString();
-
-				ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-				String responseBody = response.getBody();
-
-				// converte o JSON para o dto
-				ObjectMapper objectMapper = new ObjectMapper();
-				OmdbResponseDTO omdbResponse = objectMapper.readValue(responseBody, OmdbResponseDTO.class);
-
-				for (SearchResultDTO movieDto : omdbResponse.getResults()) {
-					Movies movie = new Movies();
-					movie.setTitle(movieDto.getTitle());
-					movie.setYear(movieDto.getYear());
-					movie.setType(movieDto.getType());
-					movie.setPoster(movieDto.getPoster());
-					movie.setDirector(movieDto.getDirector());
-					movie.setGenre(movieDto.getGenre());
-					movie.setReleased(movieDto.getReleased());
-					movie.setRuntime(movieDto.getRuntime());
-					movie.setIdImdb(movieDto.getImdbID());
-					movie.setWriter(movieDto.getWriter());
-					movie.setPlot(movieDto.getPlot());
-					movie.setImdbRating(movieDto.getImdbRating());
-					moviesRepository.save(movie);
-				}
-			}
-
-			List<Movies> moviesList = moviesRepository.findAll();
-			return moviesList.stream().map(MoviesDTO::new).collect(Collectors.toList());
-
-		} catch (Exception e) {
-			throw new RuntimeException("Erro ao buscar dados da API OMDB: " + e.getMessage());
-		}
+	    int maxPages = 50;
+	    int currentPage = 1;
+	    
+	    try {
+	        for (int i = 0; i < maxPages; i++) {
+	            String url = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL)
+	                    .queryParam("s", "movies")
+	                    .queryParam("page", currentPage + i)
+	                    .queryParam("apikey", apiKey)
+	                    .toUriString();
+	            
+	            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+	            String responseBody = response.getBody();
+	            
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            OmdbResponseDTO omdbResponse = objectMapper.readValue(responseBody, OmdbResponseDTO.class);
+	            
+	            for (SearchResultDTO movieDtoApi : omdbResponse.getResults()) {
+	                String movieUrl = UriComponentsBuilder.fromHttpUrl(OMDB_API_URL)
+	                        .queryParam("i", movieDtoApi.getImdbID())
+	                        .queryParam("apikey", apiKey)
+	                        .toUriString();
+	                
+	                
+	                ResponseEntity<String> movieResponse = restTemplate.getForEntity(movieUrl, String.class);
+	                String movieResponseBody = movieResponse.getBody();
+	                
+	                MoviesDTO movieDto = objectMapper.readValue(movieResponseBody, MoviesDTO.class);
+	                
+	                Movies movie = new Movies();
+	                movie.setTitle(movieDto.getTitle());
+	                movie.setYear(movieDto.getYear());
+	                movie.setType(movieDto.getType());
+	                movie.setPoster(movieDto.getPoster());
+	                movie.setDirector(movieDto.getDirector());
+	                movie.setGenre(movieDto.getGenre());
+	                movie.setReleased(movieDto.getReleased());
+	                movie.setRuntime(movieDto.getRuntime());
+	                movie.setIdImdb(movieDto.getImdbID());
+	                movie.setWriter(movieDto.getWriter());
+	                movie.setPlot(movieDto.getPlot());
+	                movie.setImdbRating(movieDto.getImdbRating());
+	                moviesRepository.save(movie);
+	            }
+	        }
+	        
+	        List<Movies> moviesList = moviesRepository.findAll();
+	        return moviesList.stream().map(MoviesDTO::new).collect(Collectors.toList());
+	        
+	    } catch (Exception e) {
+	        throw new RuntimeException("Erro ao buscar dados da API OMDB: " + e.getMessage());
+	    }
 	}
+
 
 	public List<MoviesDTO> listAll() {
 		List<Movies> movies = moviesRepository.findAll();
