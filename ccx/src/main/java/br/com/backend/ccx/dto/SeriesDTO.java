@@ -13,40 +13,40 @@ import jakarta.persistence.OneToMany;
 public class SeriesDTO {
 
 	@JsonProperty("Title")
-    private String title;
+	private String title;
 
-    @JsonProperty("Year")
-    private String year;
+	@JsonProperty("Year")
+	private String year;
 
-    @JsonProperty("imdbID")
-    private String imdbID;
+	@JsonProperty("imdbID")
+	private String imdbID;
 
-    @JsonProperty("Type")
-    private String type;
+	@JsonProperty("Type")
+	private String type;
 
-    @JsonProperty("Poster")
-    private String poster;
+	@JsonProperty("Poster")
+	private String poster;
 
-    @JsonProperty("Genre")
-    private String genre;
+	@JsonProperty("Genre")
+	private String genre;
 
-    @JsonProperty("Runtime")
+	@JsonProperty("Runtime")
 	private String runtime;
 
-    @JsonProperty("Released")
+	@JsonProperty("Released")
 	private String released;
 
-    @JsonProperty("Plot")
+	@JsonProperty("Plot")
 	private String plot;
 
-    @JsonProperty("Director")
+	@JsonProperty("Director")
 	private String director;
 
-    @JsonProperty("Writer")
+	@JsonProperty("Writer")
 	private String writer;
 
-    @JsonProperty("imdbRating")
-	private Double imdbRating;
+	@JsonProperty("imdbRating")
+	private String imdbRating;
 
 	@OneToMany(mappedBy = "serie")
 	private List<Publication> publications;
@@ -55,12 +55,22 @@ public class SeriesDTO {
 		super();
 	}
 
-	public SeriesDTO(String title, String year, String type, String poster, List<Publication> publications) {
+	public SeriesDTO(String title, String year, String imdbID, String type, String poster, String genre, String runtime,
+			String released, String plot, String director, String writer, String imdbRating,
+			List<Publication> publications) {
 		super();
 		this.title = title;
 		this.year = year;
+		this.imdbID = imdbID;
 		this.type = type;
 		this.poster = poster;
+		this.genre = genre;
+		this.runtime = runtime;
+		this.released = released;
+		this.plot = plot;
+		this.director = director;
+		this.writer = writer;
+		this.imdbRating = imdbRating;
 		this.publications = publications;
 	}
 
@@ -161,11 +171,11 @@ public class SeriesDTO {
 		this.writer = writer;
 	}
 
-	public Double getImdbRating() {
+	public String getImdbRating() {
 		return imdbRating;
 	}
 
-	public void setImdbRating(Double imdbRating) {
+	public void setImdbRating(String imdbRating) {
 		this.imdbRating = imdbRating;
 	}
 
@@ -177,5 +187,4 @@ public class SeriesDTO {
 		this.publications = publications;
 	}
 
-	
 }

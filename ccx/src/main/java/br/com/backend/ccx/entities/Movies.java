@@ -18,25 +18,35 @@ public class Movies {
 	private String year;
 	private String type;
 	private String poster;
-	private String Genre;
-	private String Runtime;
-	private String Released;
-	private String Plot;
-	private String Director;
-	private String Writer;
-	private Double imdbRating;
+	private String genre;
+	private String runtime;
+	private String released;
+	private String plot;
+	private String director;
+	private String writer;
+	private String imdbRating;
 	private String idImdb;
 
 	@OneToMany(mappedBy = "movie")
 	private List<Publication> publications;
 
-	public Movies(Long id, String title, String year, String type, String poster, List<Publication> publications) {
+	public Movies(Long id, String title, String year, String type, String poster, String genre, String runtime,
+			String released, String plot, String director, String writer, String imdbRating, String idImdb,
+			List<Publication> publications) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.year = year;
 		this.type = type;
 		this.poster = poster;
+		this.genre = genre;
+		this.runtime = runtime;
+		this.released = released;
+		this.plot = plot;
+		this.director = director;
+		this.writer = writer;
+		this.imdbRating = imdbRating;
+		this.idImdb = idImdb;
 		this.publications = publications;
 	}
 
@@ -93,58 +103,58 @@ public class Movies {
 	}
 
 	public String getGenre() {
-		return Genre;
+		return genre;
 	}
 
 	public void setGenre(String genre) {
-		Genre = genre;
+		this.genre = genre;
 	}
 
 	public String getRuntime() {
-		return Runtime;
+		return runtime;
 	}
 
 	public void setRuntime(String runtime) {
-		Runtime = runtime;
+		this.runtime = runtime;
 	}
 
 	public String getReleased() {
-		return Released;
+		return released;
 	}
 
 	public void setReleased(String released) {
-		Released = released;
+		this.released = released;
 	}
 
 	public String getPlot() {
-		return Plot;
+		return plot;
 	}
 
 	public void setPlot(String plot) {
-		Plot = plot;
+		this.plot = plot;
 	}
 
 	public String getDirector() {
-		return Director;
+		return director;
 	}
 
 	public void setDirector(String director) {
-		Director = director;
+		this.director = director;
 	}
 
 	public String getWriter() {
-		return Writer;
+		return writer;
 	}
 
 	public void setWriter(String writer) {
-		Writer = writer;
+		this.writer = writer;
 	}
 
-	public Double getImdbRating() {
+	public String getImdbRating() {
 		return imdbRating;
 	}
 
-	public void setImdbRating(Double imdbRating) {
+	public void setImdbRating(String imdbRating) {
 		this.imdbRating = imdbRating;
 	}
 
@@ -156,5 +166,5 @@ public class Movies {
 		this.idImdb = idImdb;
 	}
 
-	
+
 }
