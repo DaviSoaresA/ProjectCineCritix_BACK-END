@@ -9,7 +9,7 @@ import br.com.backend.ccx.entities.Movies;
 import br.com.backend.ccx.entities.Publication;
 import jakarta.persistence.OneToMany;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties({"publications"})
 public class MoviesDTO {
 
 	private Long id;
