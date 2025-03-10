@@ -1,7 +1,5 @@
 package br.com.backend.ccx.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,16 +26,16 @@ public class Publication {
 	private String notes;
 
 	@ManyToOne
-	@JoinColumn(name = "movie_id")
-	private Movies movie;
-	
-	@ManyToOne
-	@JoinColumn(name = "serie_id")
-	private Series series;
+    @JoinColumn(name = "movie_id")
+    private Movies movie;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+    @ManyToOne
+    @JoinColumn(name = "serie_id")
+    private Series series;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 	public Publication(Long id, Double rate, String notes, Movies movie, User user, Series series) {
 		super();

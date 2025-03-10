@@ -7,11 +7,13 @@ import br.com.backend.ccx.entities.User;
 
 public class PublicationDTO {
 
+	private Long id;
+
 	private Double rate;
 
 	private String notes;
 
-	@JsonIgnoreProperties("publications") 
+	@JsonIgnoreProperties("publications")
 	private User user;
 
 	public PublicationDTO(Double rate, String notes, User user) {
@@ -26,6 +28,7 @@ public class PublicationDTO {
 	}
 
 	public PublicationDTO(Publication publication) {
+		this.id = publication.getId();
 		this.rate = publication.getRate();
 		this.notes = publication.getNotes();
 		this.user = publication.getUser();
@@ -45,6 +48,14 @@ public class PublicationDTO {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public User getUser() {
