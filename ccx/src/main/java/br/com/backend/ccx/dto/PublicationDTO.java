@@ -1,5 +1,7 @@
 package br.com.backend.ccx.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import br.com.backend.ccx.entities.Publication;
 import br.com.backend.ccx.entities.User;
 
@@ -9,6 +11,7 @@ public class PublicationDTO {
 
 	private String notes;
 
+	@JsonIgnoreProperties("publications") 
 	private User user;
 
 	public PublicationDTO(Double rate, String notes, User user) {
@@ -21,6 +24,7 @@ public class PublicationDTO {
 	public PublicationDTO() {
 		super();
 	}
+
 	public PublicationDTO(Publication publication) {
 		this.rate = publication.getRate();
 		this.notes = publication.getNotes();
