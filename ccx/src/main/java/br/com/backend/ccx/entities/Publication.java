@@ -100,4 +100,6 @@ public class Publication {
 		this.movie = movie;
 	}
 
+	
+
 }

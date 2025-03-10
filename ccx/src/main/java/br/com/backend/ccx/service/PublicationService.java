@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.backend.ccx.dto.PublicationDTO;
 import br.com.backend.ccx.dto.PublicationInsertDTO;
+import br.com.backend.ccx.entities.Movies;
 import br.com.backend.ccx.entities.Publication;
 import br.com.backend.ccx.entities.User;
 import br.com.backend.ccx.exception.NotAuthorizedException;
 import br.com.backend.ccx.exception.NotFoundException;
+import br.com.backend.ccx.repository.MoviesRepository;
 import br.com.backend.ccx.repository.PublicationRepository;
 import br.com.backend.ccx.repository.UserRepository;
 import br.com.backend.ccx.security.JwtUtil;
@@ -24,6 +26,8 @@ public class PublicationService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private MoviesRepository moviesRepository;
 	
 	@Autowired
 	private JwtUtil jwt;
@@ -50,10 +54,16 @@ public class PublicationService {
 		}
 		
         Publication publication = new Publication();
+        
+        Optional<Movies>moviesOpt = moviesRepository.findById(insertDto.getMovieId());
+        if (moviesOpt.isEmpty()) {
+            throw new NotFoundException("Movie Not Found");
+        }
+        
         publication.setNotes(insertDto.getNotes());
         publication.setRate(insertDto.getRate());
         publication.setUser(userOpt.get());
-        publication.setMovie(insertDto.getMovies());
+        publication.setMovie(moviesOpt.get());
         publicationRepository.save(publication);
         
         PublicationDTO publicationDTO = new PublicationDTO(publication);

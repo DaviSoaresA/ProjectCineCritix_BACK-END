@@ -1,18 +1,12 @@
 package br.com.backend.ccx.dto;
 
-import br.com.backend.ccx.entities.Movies;
-import br.com.backend.ccx.entities.Publication;
-import br.com.backend.ccx.entities.User;
-
 public class PublicationInsertDTO {
 
 	private Double rate;
 
 	private String notes;
 
-	private User user;
-
-	private Movies movies;
+	private Long movieId;
 
 	public Double getRate() {
 		return rate;
@@ -30,20 +24,14 @@ public class PublicationInsertDTO {
 		this.notes = notes;
 	}
 
-	public User getUser() {
-		return user;
+	
+
+	public Long getMovieId() {
+		return movieId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Movies getMovies() {
-		return movies;
-	}
-
-	public void setMovies(Movies movies) {
-		this.movies = movies;
+	public void setMovieId(Long movieId) {
+		this.movieId = movieId;
 	}
 
 }
