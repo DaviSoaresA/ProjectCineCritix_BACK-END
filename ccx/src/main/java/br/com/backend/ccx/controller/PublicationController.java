@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping("/publication")
+@RequestMapping("/publications")
 public class PublicationController {
 
 	@Autowired
@@ -57,7 +58,7 @@ public class PublicationController {
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 	@PostMapping
-	public ResponseEntity<PublicationDTO> create(PublicationInsertDTO publicationInsert,
+	public ResponseEntity<PublicationDTO> create(@RequestBody PublicationInsertDTO publicationInsert,
 			@RequestHeader("Authorization") String bearerToken) {
 		return ResponseEntity.ok(publicationService.save(publicationInsert, bearerToken));
 	}
