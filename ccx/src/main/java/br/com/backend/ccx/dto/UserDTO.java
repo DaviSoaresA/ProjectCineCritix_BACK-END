@@ -8,6 +8,7 @@ public class UserDTO {
 	private String email;
 	private String fullName;
 	private Role profile;
+	private String avatar;
 
 	public UserDTO() {
 	}
@@ -16,6 +17,7 @@ public class UserDTO {
 		this.email = user.getEmail();
 		this.fullName = user.getFullName();
 		this.profile = user.getProfile();
+		this.avatar = user.getAvatar();
 	}
 
 	public Role getProfile() {
@@ -40,6 +42,14 @@ public class UserDTO {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 }
