@@ -8,6 +8,8 @@ public class PublicationInsertDTO {
 
 	private Long movieId;
 
+	private Long serieId;
+
 	public Double getRate() {
 		return rate;
 	}
@@ -24,14 +26,20 @@ public class PublicationInsertDTO {
 		this.notes = notes;
 	}
 
-	
-
 	public Long getMovieId() {
 		return movieId;
 	}
 
 	public void setMovieId(Long movieId) {
 		this.movieId = movieId;
+	}
+
+	public Long getSerieId() {
+		return serieId;
+	}
+
+	public void setSerieId(Long serieId) {
+		this.serieId = serieId;
 	}
 
 }
