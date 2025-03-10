@@ -47,7 +47,8 @@ public class MoviesService {
 	private static final String OMDB_API_URL = "http://www.omdbapi.com/";
 
 	public List<MoviesDTO> insertOmdbMovies() {
-	    int maxPages = 50;
+		//cada pagina retorna 10 filmes
+	    int maxPages = 100;
 	    int currentPage = 1;
 	    
 	    try {
@@ -108,6 +109,7 @@ public class MoviesService {
 	}
 	public Page<MoviesDTO> listPag(Pageable pageable ) {
 		Page<Movies> movies = moviesRepository.findAll(pageable);
+		
 		Page<MoviesDTO> moviesDTO = movies.map(movie -> new MoviesDTO(movie));
 		return moviesDTO;
 	}

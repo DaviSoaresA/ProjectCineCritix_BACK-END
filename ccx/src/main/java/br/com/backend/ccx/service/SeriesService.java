@@ -47,7 +47,8 @@ public class SeriesService {
     private static final String OMDB_API_URL = "http://www.omdbapi.com/";
 
     public List<SeriesDTO> insertOmdbSeries() {
-        int maxPages = 50;
+        //cada pagina retorna 10 series
+    	int maxPages = 100;
         int currentPage = 1;
         
         try {

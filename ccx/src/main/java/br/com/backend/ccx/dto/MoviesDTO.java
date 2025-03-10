@@ -12,6 +12,8 @@ import jakarta.persistence.OneToMany;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MoviesDTO {
 
+	private Long id;
+
 	@JsonProperty("Title")
 	private String title;
 
@@ -55,10 +57,11 @@ public class MoviesDTO {
 		super();
 	}
 
-	public MoviesDTO(String title, String year, String imdbID, String type, String poster, String genre, String runtime,
-			String released, String plot, String director, String writer, String imdbRating,
+	public MoviesDTO(Long id, String title, String year, String imdbID, String type, String poster, String genre,
+			String runtime, String released, String plot, String director, String writer, String imdbRating,
 			List<Publication> publications) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.year = year;
 		this.imdbID = imdbID;
@@ -75,21 +78,21 @@ public class MoviesDTO {
 	}
 
 	public MoviesDTO(Movies movies) {
-	    this.title = movies.getTitle();
-	    this.year = movies.getYear();
-	    this.imdbID = movies.getIdImdb();
-	    this.type = movies.getType();
-	    this.poster = movies.getPoster();
-	    this.genre = movies.getGenre();
-	    this.runtime = movies.getRuntime();
-	    this.released = movies.getReleased();
-	    this.plot = movies.getPlot();
-	    this.director = movies.getDirector();
-	    this.writer = movies.getWriter();
-	    this.imdbRating = movies.getImdbRating();
-	    this.publications = movies.getPublications();
+		this.id = movies.getId();
+		this.title = movies.getTitle();
+		this.year = movies.getYear();
+		this.imdbID = movies.getIdImdb();
+		this.type = movies.getType();
+		this.poster = movies.getPoster();
+		this.genre = movies.getGenre();
+		this.runtime = movies.getRuntime();
+		this.released = movies.getReleased();
+		this.plot = movies.getPlot();
+		this.director = movies.getDirector();
+		this.writer = movies.getWriter();
+		this.imdbRating = movies.getImdbRating();
+		this.publications = movies.getPublications();
 	}
-
 
 	public String getTitle() {
 		return title;
@@ -193,6 +196,14 @@ public class MoviesDTO {
 
 	public void setPublications(List<Publication> publications) {
 		this.publications = publications;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
