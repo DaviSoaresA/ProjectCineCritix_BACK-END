@@ -71,15 +71,18 @@ public class UserService {
 			throw new NotFoundException("User not found");
 		}
 		
-		if (!userInsert.getConfirmPassword().equals(userInsert.getPassword())) {
-            throw new RuntimeException("As senhas estão diferentes");
-        }
+		if (userInsert.getPassword() != null) {
+			if (!userInsert.getConfirmPassword().equals(userInsert.getPassword())) {
+				throw new RuntimeException("As senhas estão diferentes");
+			}
+		}
+		
 
 		User user = new User();
 		user.setId(idUser);
 		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
 		user.setFullName(userInsert.getFullName() != null ? userInsert.getFullName() : userOpt.get().getFullName());
-		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		user.setPassword(userInsert.getPassword() != null ? bCryptPasswordEncoder.encode(userInsert.getPassword()) : userOpt.get().getPassword());
 		user.setProfile(userInsert.getProfile() != null ? userInsert.getProfile() : userOpt.get().getProfile());
 		user.setAvatar(userInsert.getAvatar() != null ? userInsert.getAvatar() : userOpt.get().getAvatar());
 		repository.save(user);
