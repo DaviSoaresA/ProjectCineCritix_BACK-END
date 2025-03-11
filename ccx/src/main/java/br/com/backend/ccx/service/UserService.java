@@ -62,14 +62,18 @@ public class UserService {
 		return user;
 	}
 
-	public UserDTO update(UserInsertDTO userInsert, String Token) {
-		Long idUser = jwt.getId(Token);
+	public UserDTO update(UserInsertDTO userInsert, String token) {
+		Long idUser = jwt.getId(token);
 
 		Optional<User> userOpt = repository.findById(idUser);
 
 		if (userOpt.isEmpty()) {
 			throw new NotFoundException("User not found");
 		}
+		
+		if (!userInsert.getConfirmPassword().equals(userInsert.getPassword())) {
+            throw new RuntimeException("As senhas estão diferentes");
+        }
 
 		User user = new User();
 		user.setId(idUser);
