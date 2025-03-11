@@ -62,20 +62,27 @@ public class UserService {
 		return user;
 	}
 
-	public UserDTO update(UserInsertDTO userInsert, String Token) {
-		Long idUser = jwt.getId(Token);
+	public UserDTO update(UserInsertDTO userInsert, String token) {
+		Long idUser = jwt.getId(token);
 
 		Optional<User> userOpt = repository.findById(idUser);
 
 		if (userOpt.isEmpty()) {
 			throw new NotFoundException("User not found");
 		}
+		
+		if (userInsert.getPassword() != null) {
+			if (!userInsert.getConfirmPassword().equals(userInsert.getPassword())) {
+				throw new RuntimeException("As senhas estão diferentes");
+			}
+		}
+		
 
 		User user = new User();
 		user.setId(idUser);
 		user.setEmail(userInsert.getEmail() != null ? userInsert.getEmail() : userOpt.get().getEmail());
 		user.setFullName(userInsert.getFullName() != null ? userInsert.getFullName() : userOpt.get().getFullName());
-		user.setPassword(userInsert.getPassword() != null ? userInsert.getPassword() : userOpt.get().getPassword());
+		user.setPassword(userInsert.getPassword() != null ? bCryptPasswordEncoder.encode(userInsert.getPassword()) : userOpt.get().getPassword());
 		user.setProfile(userInsert.getProfile() != null ? userInsert.getProfile() : userOpt.get().getProfile());
 		user.setAvatar(userInsert.getAvatar() != null ? userInsert.getAvatar() : userOpt.get().getAvatar());
 		repository.save(user);

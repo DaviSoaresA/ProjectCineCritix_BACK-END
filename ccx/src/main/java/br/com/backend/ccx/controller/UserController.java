@@ -92,7 +92,6 @@ public class UserController {
 	@PutMapping
 	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserInsertDTO userInsertDTO,
 			@RequestHeader("Authorization") String bearerToken) {
-
 		UserDTO user = service.update(userInsertDTO, bearerToken);
 		return ResponseEntity.ok(user);
 	}
