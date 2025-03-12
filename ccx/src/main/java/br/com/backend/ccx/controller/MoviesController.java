@@ -91,7 +91,7 @@ public class MoviesController {
 			@ApiResponse(responseCode = "403", description = "Operação proibida e não pode ser concluída"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
-	@GetMapping("/{title}")
+	@GetMapping("/title/{title}")
 	public ResponseEntity<MoviesDTO> searchByTitle(@PathVariable String title) {
 		MoviesDTO moviesDTO = moviesService.findByTitle(title);
 		return ResponseEntity.ok(moviesDTO);
