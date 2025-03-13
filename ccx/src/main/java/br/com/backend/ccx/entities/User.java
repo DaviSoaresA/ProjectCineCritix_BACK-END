@@ -48,7 +48,7 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private Role profile;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Publication> publications = new ArrayList<>();
 
 	@Column
