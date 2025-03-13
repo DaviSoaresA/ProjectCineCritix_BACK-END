@@ -65,7 +65,7 @@ public class PublicationService {
 			if (moviesOpt.isEmpty()) {
 				throw new NotFoundException("Movie Not Found");
 			}
-			publication.setMovie(insertDto.getMovieId() != null ? moviesOpt.get() : null);
+			publication.setMovie(moviesOpt.get());
 		}
 		if (insertDto.getSerieId() != null) {
 			Optional<Series> seriesOpt = seriesRepository.findById(insertDto.getSerieId());
@@ -78,6 +78,7 @@ public class PublicationService {
 		publication.setNotes(insertDto.getNotes());
 		publication.setRate(insertDto.getRate());
 		publication.setUser(userOpt.get());
+		
 		publicationRepository.save(publication);
 
 		PublicationDTO publicationDTO = new PublicationDTO(publication);
