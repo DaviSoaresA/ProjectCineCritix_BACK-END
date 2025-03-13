@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.backend.ccx.entities.Movies;
 import br.com.backend.ccx.entities.Publication;
+import br.com.backend.ccx.entities.Series;
 import br.com.backend.ccx.entities.User;
 
 public class PublicationDTO {
@@ -19,6 +20,9 @@ public class PublicationDTO {
 
 	@JsonIgnoreProperties("publications")
 	private Movies movies;
+
+	@JsonIgnoreProperties("publications")
+	private Series series;
 
 	public Movies getMovies() {
 		return movies;
@@ -37,10 +41,20 @@ public class PublicationDTO {
 		this.rate = publication.getRate();
 		this.notes = publication.getNotes();
 		this.user = publication.getUser();
+		this.movies = publication.getMovie();
+		this.series = publication.getSeries();
 	}
 
 	public Double getRate() {
 		return rate;
+	}
+
+	public Series getSeries() {
+		return series;
+	}
+
+	public void setSeries(Series series) {
+		this.series = series;
 	}
 
 	public void setRate(Double rate) {
